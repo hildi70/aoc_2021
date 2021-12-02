@@ -1,10 +1,7 @@
 #part 1
 input <- as.data.frame(read.table('day2.txt'))
-colnames(input) <- c('V1', 'V2')
-View(input)
-forward <- subset(input, V1=='forward')
-sum(forward[,2]) #2024
 
+forward <- subset(input, V1=='forward')
 down <- subset(input, V1=='down') 
 up <- subset(input, V1=='up')
 depth <- sum(down[,2]) - sum(up[,2])
@@ -15,12 +12,9 @@ depth <- sum(down[,2]) - sum(up[,2])
 
 #part 2
 input <- as.data.frame(read.table('day2.txt'))
-colnames(input) <- c('V1', 'V2')
-input$forward <- rep(0, nrow(input))
-input$depth <- rep(0, nrow(input))
-input$aim <- rep(0, nrow(input))
 
-input$forward[1] <- input$V2[1]
+input$aim <- rep(0, nrow(input))
+input$depth <- rep(0, nrow(input))
 
 for (i in 2:nrow(input)) {
   if (input$V1[i] == 'down') {
@@ -32,12 +26,10 @@ for (i in 2:nrow(input)) {
   }
 }
 
-ssforward <- subset(input, V1=='forward')
-View(ssforward)
+input_forward <- subset(input, V1=='forward')
 
-for (i in 2:nrow(ssforward)) {
-  ssforward$depth[i] <- ssforward$V2[i] * ssforward$aim[i]+ssforward$depth[i-1]
+for (i in 2:nrow(input_forward)) {
+  input_forward$depth[i] <- input_forward$V2[i] * input_forward$aim[i]+input_forward$depth[i-1]
 }
 
-
-ssforward$depth[nrow(ssforward)]*sum(ssforward$V2) #1620141160
+input_forward$depth[nrow(input_forward)]*sum(input_forward$V2) #1620141160
