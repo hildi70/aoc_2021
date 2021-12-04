@@ -21,7 +21,7 @@ for (i in 1: length(numb)) {
   }
   if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
 }
-i
+
 sum(boardlist[[j]]*boardlist_logical[[j]])*numb[i] #34506
 
 #part 2
