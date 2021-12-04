@@ -21,8 +21,40 @@ for (i in 1: length(numb)) {
   }
   if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
 }
-
-
+i
 sum(boardlist[[j]]*boardlist_logical[[j]])*numb[i] #34506
 
 #part 2
+#beautiful is something else...
+boardlist_2 <- boardlist
+boardlist_logical <- lapply(boardlist_2, `>`, -1)
+j = 1
+
+for (i in 1:length(numb)) {
+  while (j <= length(boardlist_logical)) {
+    x <- boardlist_2[[j]][]!=numb[i]
+    boardlist_logical[[j]][] <- x*boardlist_logical[[j]][]
+
+    if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) {
+        boardlist_logical <- boardlist_logical[-j] 
+        boardlist_2 <- boardlist_2[-j]
+      } else {
+      j <- j +1
+      }
+  }
+  j = 1
+  if (length(boardlist_logical) == 1) break;
+}
+
+for (i in 1: length(numb)) {
+  for (j in 1: length(boardlist_2)) {
+    x <- boardlist_2[[j]][]!=numb[i]
+    boardlist_logical[[j]][] <- x*boardlist_logical[[j]][]
+    if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+  }
+  if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+}
+
+sum(boardlist_2[[j]]*boardlist_logical[[j]])*numb[i] #7686
+
+
