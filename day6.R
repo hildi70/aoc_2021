@@ -2,16 +2,15 @@
 fishies <- scan('day6.txt', sep=",", nlines = 1)
 fishies <- as.numeric(fishies)
 
-#wanted to try out some apply-functions
-day_later <- function(x) x-1
 growth <- function(x) {ifelse(x == -1, 6, x)}
 days = 80
 for (i in 1:days) {
-  new_fish <- sum(sapply(fishies, '==', 0))
-  fishies <- unlist(sapply(fishies, day_later))
+  new_fish <- sum(fishies == 0)
+  fishies <- fishies - 1
   fishies <- unlist(sapply(fishies, growth))
   fishies <- append(fishies, c(rep(8, new_fish)))
 }
+
 length(fishies) #379114
 
 
