@@ -26,4 +26,4 @@ vignettes/*.pdf
 *.knit.md
 # R Environment Variables
 .Renviron
-advent_of_code_2021.Rproj
+aoc_2021.Rproj
