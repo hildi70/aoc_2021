@@ -1,35 +1,28 @@
-#part 1
-input <- as.data.frame(read.table('day2.txt'))
+library(dplyr)
+input <- read.table("input/day02.txt", col.names = c("direction", "units"))%>%
+  mutate(units = ifelse(direction == "up", units*(-1), units),
+         direction = ifelse(direction == "up", "down", direction)
+  )
 
-forward <- subset(input, V1=='forward')
-down <- subset(input, V1=='down') 
-up <- subset(input, V1=='up')
-depth <- sum(down[,2]) - sum(up[,2])
-
-#forward * depth
-2024*717 #1451208
+##### part 1 #####
+# base R
+horizontal <- sum(input$units[input$direction == "forward"])
+depth <- sum(input$units[input$direction == "down"])
+horizontal * depth   #1451208
 
 
-#part 2
-input <- as.data.frame(read.table('day2.txt'))
+##### part 2 #####
 
-input$aim <- rep(0, nrow(input))
-input$depth <- rep(0, nrow(input))
+aim <- 0
+depth <- 0
+horizontal <- 0
 
-for (i in 2:nrow(input)) {
-  if (input$V1[i] == 'down') {
-    input$aim[i] <- input$aim[i-1]+input$V2[i];
-  } else if (input$V1[i] == 'up') {
-    input$aim[i] <- input$aim[i-1]-input$V2[i];
-  } else {
-    input$aim[i] <- input$aim[i-1]
-  }
-}
-
-input_forward <- subset(input, V1=='forward')
-
-for (i in 2:nrow(input_forward)) {
-  input_forward$depth[i] <- input_forward$V2[i] * input_forward$aim[i]+input_forward$depth[i-1]
-}
-
-input_forward$depth[nrow(input_forward)]*sum(input_forward$V2) #1620141160
+for (i in 1:nrow(input)) {
+  ifelse (input$direction[i] == "down",
+    aim <- aim + input$units[i],
+    (depth <- depth + aim * input$units[i]) &
+    (horizontal <- horizontal + input$units[i])
+  )
+} 
+  
+horizontal * depth #1620141160
