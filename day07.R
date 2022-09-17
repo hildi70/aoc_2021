@@ -1,5 +1,5 @@
 #part 1
-crabs <- as.numeric(scan('day7.txt', sep=",", nlines = 1))
+crabs <- as.numeric(scan("input/day07.txt", sep=",", nlines = 1))
 
 fuel <- data.frame((matrix(nrow=1, ncol=length(crabs))))
 for (i in 0:max(crabs)) {

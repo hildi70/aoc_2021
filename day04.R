@@ -1,60 +1,57 @@
-#part 1
-#Vector for drawn numbers
-numb <- scan('day4.txt', sep=",", nlines = 1)
-#Boards as list
-board <- read.table('day4.txt', skip =1)
-n_boards <- nrow(board)/5
-n_boards
-board$number <- rep(1:n_boards, each=5)
-boardlist <- split(board, board$number)
-boardlist <- lapply(boardlist, function(x) { x["number"] <- NULL; x })
-#Boards as logical (Danke Juli ;))
-boardlist_logical <- lapply(boardlist, `>`, -1)
+drawn_numbers <- scan("input/day04.txt", sep=",", nlines = 1)
+bingo_boards <- read.table("input/day04.txt", skip =1)
+
+n_boards <- nrow(bingo_boards)/5
+bingo_boards$number <- rep(1:n_boards, each=5)
+bingo_boards <- split(bingo_boards, bingo_boards$number)
+bingo_boards <- lapply(bingo_boards, function(x) { x["number"] <- NULL; x })
+
+##### part 1 #####
+bingo_boards_logical <- lapply(bingo_boards, `>`, -1)
 
 
-#Work in progress: I would like to express the second loop as lapply
-for (i in 1: length(numb)) {
-  for (j in 1: length(boardlist)) {
-    x <- boardlist[[j]][]!=numb[i]
-    boardlist_logical[[j]][] <- x*boardlist_logical[[j]][]
-    if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+for (number in seq_along(drawn_numbers)) {
+  for (board in seq_along(bingo_boards)) {
+    temp <- bingo_boards[[board]][]!= drawn_numbers[number]
+    bingo_boards_logical[[board]][] <- temp*bingo_boards_logical[[board]][]
+    if (sum(colSums(bingo_boards_logical[[board]]) == 0)>=1 || sum(rowSums(bingo_boards_logical[[board]]) == 0)>=1) break;
   }
-  if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+  if (sum(colSums(bingo_boards_logical[[board]]) == 0)>=1 || sum(rowSums(bingo_boards_logical[[board]]) == 0)>=1) break;
 }
 
-sum(boardlist[[j]]*boardlist_logical[[j]])*numb[i] #34506
+sum(bingo_boards[[board]]*bingo_boards_logical[[board]])*drawn_numbers[number]  #34506
 
-#part 2
-#beautiful is something else...
-boardlist_2 <- boardlist
-boardlist_logical <- lapply(boardlist_2, `>`, -1)
-j = 1
+##### part 2 #####
+bingo_boards_logical <- lapply(bingo_boards, `>`, -1)  #reset
+bingo_boards_2 <- bingo_boards
 
-for (i in 1:length(numb)) {
-  while (j <= length(boardlist_logical)) {
-    x <- boardlist_2[[j]][]!=numb[i]
-    boardlist_logical[[j]][] <- x*boardlist_logical[[j]][]
+board = 1
 
-    if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) {
-        boardlist_logical <- boardlist_logical[-j] 
-        boardlist_2 <- boardlist_2[-j]
+for (number in seq_along(drawn_numbers)) {
+  while (board <= length(bingo_boards_logical)) {
+    x <- bingo_boards_2[[board]][]!=drawn_numbers[number]
+    bingo_boards_logical[[board]][] <- x*bingo_boards_logical[[board]][]
+
+    if (sum(colSums(bingo_boards_logical[[board]]) == 0)>=1 || sum(rowSums(bingo_boards_logical[[board]]) == 0)>=1) {
+        bingo_boards_logical <- bingo_boards_logical[-board] 
+        bingo_boards_2 <- bingo_boards_2[-board]
       } else {
-      j <- j +1
+      board <- board +1
       }
   }
-  j = 1
-  if (length(boardlist_logical) == 1) break;
+  board = 1
+  if (length(bingo_boards_logical) == 1) break;
 }
 
-for (i in 1: length(numb)) {
-  for (j in 1: length(boardlist_2)) {
-    x <- boardlist_2[[j]][]!=numb[i]
-    boardlist_logical[[j]][] <- x*boardlist_logical[[j]][]
-    if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+for (number in seq_along(drawn_numbers)) {
+  for (board in seq_along(bingo_boards_2)) {
+    x <- bingo_boards_2[[board]][]!=drawn_numbers[number]
+    bingo_boards_logical[[board]][] <- x*bingo_boards_logical[[board]][]
+    if (sum(colSums(bingo_boards_logical[[board]]) == 0)>=1 || sum(rowSums(bingo_boards_logical[[board]]) == 0)>=1) break;
   }
-  if (sum(colSums(boardlist_logical[[j]]) == 0)>=1 || sum(rowSums(boardlist_logical[[j]]) == 0)>=1) break;
+  if (sum(colSums(bingo_boards_logical[[board]]) == 0)>=1 || sum(rowSums(bingo_boards_logical[[board]]) == 0)>=1) break;
 }
 
-sum(boardlist_2[[j]]*boardlist_logical[[j]])*numb[i] #7686
+sum(bingo_boards_2[[board]]*bingo_boards_logical[[board]])*drawn_numbers[number] #7686
 
 

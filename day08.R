@@ -1,6 +1,6 @@
 #part 1 
 #count only unique digits 1,4,7 and 8
-day8 <- read.table("day8.txt", sep = "|")
+day8 <- read.table("input/day08.txt", sep = "|")
 output <- nchar(unlist(strsplit(day8[,2], " +")))
 
 n_segments <- c(6,2,5,5,4,5,6,3,7,6) #number of segements per digit

@@ -1,5 +1,5 @@
 #part 1
-day10 <- as.data.frame(readLines("day10.txt"))
+day10 <- read.table("input/day10.txt")
 wrong_closing <- c()
 
 for (i in 1:nrow(day10)) {
@@ -12,7 +12,7 @@ for (i in 1:nrow(day10)) {
     y <- nchar(day10[i,1])
     if (x == y) break;
   }
-  day10[i,1] <- sub("\\]","1",day10[i,1]) #grepl und ] werden bei mir keine Freunde
+  day10[i,1] <- sub("\\]","1",day10[i,1]) 
   day10_temp <- unlist(strsplit(day10[i,1],""))
   wrong_closing[i] <- day10_temp[min(grep("[>\\Q)}\\E1]", day10_temp))]
 }

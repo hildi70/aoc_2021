@@ -1,23 +1,18 @@
 library(tidyverse)
-#part1
-input <- read.table("day5.txt")
-#getting data ready
-input <- input %>% 
+
+input <- read.table("input/day05.txt")%>% 
   separate(V1, c("x1", "y1")) %>%
   separate(V3, c("x2", "y2")) %>%
-  select(-3)
+  select(-3) %>%
+  mutate(across(1:length(input), function(x) as.numeric(as.character(x))))
 
+##### part1 #####
+# keep only horizontal or vertical lines
+straight_lines <- subset(input, y1==y2|x1==x2)
 
-#only horizontal or vertical lines
-input <- subset(input, y1==y2|x1==x2)
-input$x1 <- as.numeric(input$x1)
-input$x2 <- as.numeric(input$x2)
-input$y1 <- as.numeric(input$y1)
-input$y2 <- as.numeric(input$y2)
-
-#Build coordinate system
-max(input) #990
-min(input) #10
+# build coordinate system
+max(straight_lines) #990
+min(straight_lines) #10
 
 x_axis <- c(1:1000)
 y_axis <- c(1:1000)
@@ -25,30 +20,19 @@ y_axis <- c(1:1000)
 df <- data.frame(matrix(ncol = length(x_axis), nrow = length(y_axis)))
 df[,] <- 0
 
-#Adding the lines
-for (i in 1:nrow(input)) {
-  df[input$y1[i]:input$y2[i], input$x1[i]:input$x2[i]] = df[input$y1[i]:input$y2[i], input$x1[i]:input$x2[i]] + 1
+# adding lines
+for (i in 1:nrow(straight_lines)) {
+  df[straight_lines$y1[i]:straight_lines$y2[i], straight_lines$x1[i]:straight_lines$x2[i]] = df[straight_lines$y1[i]:straight_lines$y2[i], straight_lines$x1[i]:straight_lines$x2[i]] + 1
 }
 
-#How often do at least 2 lines overlap?
+# how often do at least 2 lines overlap?
 sum(df[,]>=2) #6572
 
-#part2
-#Now also diagonal lines
-#Reset input
-input <- read.table("day5.txt")
-input <- input %>% separate(V1, c("x1", "y1"))
-input <- input %>% separate(V3, c("x2", "y2"))
-input <- input[-3]
-input$x1 <- as.numeric(input$x1)
-input$x2 <- as.numeric(input$x2)
-input$y1 <- as.numeric(input$y1)
-input$y2 <- as.numeric(input$y2)
-
-#Reset df
+##### part2 #####
+# keep also diagonal lines
 df[,] <- 0
 
-#Adding the lines in dependency of their gradient
+# adding lines according to their gradient
 for (i in 1:nrow(input)) {
   if (input$y1[i]==input$y2[i]|input$x1[i]==input$x2[i]) {
     df[input$y1[i]:input$y2[i], input$x1[i]:input$x2[i]] = df[input$y1[i]:input$y2[i], input$x1[i]:input$x2[i]] + 1

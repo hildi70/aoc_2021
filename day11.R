@@ -1,5 +1,5 @@
 #part 1
-day11 <- read.table("day11.txt",sep="")
+day11 <- read.table("input/day11.txt",sep="")
 day11[,1] <- as.character(day11[,1])
 matrix <- matrix(as.numeric(unlist(strsplit(day11[,1],""))), byrow=TRUE, nrow=nrow(day11))
 

@@ -1,9 +1,8 @@
 library(tidyverse)
-#Not the most beautiful code. Not at all... :D
 
 #part 1
-day13 <- read.table("day13.txt", nrows = 782)
-instructions <- read.table("day13.txt", skip = 782)
+day13 <- read.table("input/day13.txt", nrows = 782)
+instructions <- read.table("input/day13.txt", skip = 782)
 
 day13 <- day13 %>% 
   separate(V1, c("x", "y"))

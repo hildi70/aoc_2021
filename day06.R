@@ -1,5 +1,5 @@
 #part 1
-fishies <- scan('day6.txt', sep=",", nlines = 1)
+fishies <- scan("input/day06.txt", sep=",", nlines = 1)
 fishies <- as.numeric(fishies)
 
 growth <- function(x) {ifelse(x == -1, 6, x)}
